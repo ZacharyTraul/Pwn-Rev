@@ -26,7 +26,8 @@ Considering we are trying to detect imports, it looks like the [imports](http://
 `imports(dll_name, function_name)
 `
 
-After looking for a way to tell what version of Visual Studio was used to create the binary, it [looks](https://stackoverflow.com/questions/40831299/can-i-tell-what-version-of-visual-studio-was-used-to-build-a-dll-by-examining-th "looks") like looking at the linker version is the way to go. Conveniently, there is also an easy way to look at that as well with [linker_version](https://yara.readthedocs.io/en/stable/modules/pe.html#c.linker_version "linker_version").major and .minor:
+After looking for a way to tell what version of Visual Studio was used to create the binary, it [looks](https://stackoverflow.com/questions/40831299/can-i-tell-what-version-of-visual-studio-was-used-to-build-a-dll-by-examining-th "looks") like looking at the linker version is the way to go. Conveniently, there is also an easy way to look at that as well with [linker_version](https://yara.readthedocs.io/en/stable/modules/pe.html#c.linker_version "linker_version"):
+
 `linker_version.major` and `linker_version.minor`
 ## Investigation
 Now that we know what functions we want to use, we need to find the linker version we will compare against and the name of the dll and function we will check with imports().
@@ -81,7 +82,7 @@ Doubting that there would be a program that could do this for me, I decided to o
 0002c990: 6100 7200 6500 2e00 6400 6c00 6c00 0000  a.r.e...d.l.l...
 
 ```
-While it is a bit odd that most off the characters are separated by null bytes, you can clearly see `kernel32.dll` and `malware.dll` hanging arund `CreateRemoteThread`. We can try both.
+While it is a bit odd that most off the characters are separated by null bytes, you can clearly see `kernel32.dll` and `malware.dll` hanging around `CreateRemoteThread`. We can try both if we need to.
 ## Putting it all together
 So far we know we want a rule that imports pe and somehow uses the linker version and imports function to check files. That leaves us with a file looking something like this:
 ```
@@ -105,7 +106,7 @@ rule yarp {
 ```
 ![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/opera_2020-10-24_22-17-08.png?raw=true)
 
-Awesome! It looks like that eliminated all the files made in Visual Studio 2017. We still have the statically linked files, but checking the imports should take care of that. Considering that CreateRemoteThread comes from kernel32.dll, we will test against that first.
+Awesome! It looks like that eliminated all the files made in Visual Studio 2017. We still have the statically linked files, but checking the imports should take care of that. Considering that CreateRemoteThread [comes](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createremotethread "comes") from kernel32.dll, we will test against that first.
 ```
 import "pe"
 
