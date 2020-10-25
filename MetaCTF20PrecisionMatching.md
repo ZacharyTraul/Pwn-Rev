@@ -1,14 +1,11 @@
-
 # Precision Matching
-For this challenge we are given:
-- An in-browser YARA implementation that runs our rules against a list of binary files, only some of which we want to flag as malware.
-- One of the binaries that we need to mark as malware.
-- Information saying that the author of the malware used the following:
-a) dynamic imports for their calls to CreateRemoteThread
-b) Visual Studio 2019
+## Prompt
+YARA describes itself as a pattern matching swiss knife for malware researchers. I like to think of it though as a precision strike weapon (without the explosion part of course) for seeking out malware based on a configurable, very specific set of characteristics. In addition, it's quite helpful for identifying related samples built by the same malware author.
+
+We recently uncovered a malware author using a) dynamic imports for their calls to CreateRemoteThread, and b) Visual Studio 2019. Here's the one sample we've managed to recover so far. We'd like you to visit our YARA Rule Making Studio and craft a rule to match only these characteristics - no false positives!
 
 ## What is this YARA stuff?
-After a quick google search, I ended up at the  [documentation](http://https://yara.readthedocs.io/en/stable/writingrules.html "documentation"). Apparently it is a tool that is used to write rules against which files are checked to see if they are potentially malicious. Here is a basic example that returns true if a file is a PNG (or at least contains the header somewhere in it) :
+After a quick google search, I ended up at the [documentation](http://https://yara.readthedocs.io/en/stable/writingrules.html "documentation"). Apparently it is a tool that is used to write rules against which files are checked to see if they are potentially malicious. Here is a basic example that returns true if a file is a PNG (or at least contains the header somewhere in it) :
 ```
 rule rule_name
 {
@@ -108,7 +105,7 @@ rule yarp {
 ```
 ![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/opera_2020-10-24_22-17-08.png?raw=true)
 
-Awesome! It looks like that eliminated all the files made in Visual Studio 17. We still have the statically linked files, but checking the imports should take care of that. Considerign that CreateRemoteThread comes from kernel32.dll, we will test against that first.
+Awesome! It looks like that eliminated all the files made in Visual Studio 2017. We still have the statically linked files, but checking the imports should take care of that. Considerign that CreateRemoteThread comes from kernel32.dll, we will test against that first.
 ```
 import "pe"
 
@@ -146,6 +143,7 @@ rule yarp {
 
 ```
 ![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/opera_2020-10-24_22-31-09.png?raw=true)
+
 Looks like it worked!
 ## Closing Thoughts
 This is one of my favorite reversing challenges I have done so far. While there was less looking at a disassembler and untangling of functions, this felt much more directly applicable to malware research than most other reversing challenges I have done so far.
