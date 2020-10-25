@@ -106,7 +106,7 @@ rule yarp {
 }
 
 ```
-![Test](https://github.com/ZacharyTraul/Pwn-Rev/edit/main/opera_2020-10-24_22-17-08.png)
+![Test](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/opera_2020-10-24_22-17-08.png?raw=true)
 Awesome! It looks like that eliminated all the files made in Visual Studio 17. We still have the statically linked files, but checking the imports should take care of that. Considerign that CreateRemoteThread comes from kernel32.dll, we will test against that first.
 ```
 import "pe"
