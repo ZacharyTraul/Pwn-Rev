@@ -104,7 +104,7 @@ rule yarp {
 }
 
 ```
-![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/opera_2020-10-24_22-17-08.png?raw=true)
+![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/MetaCTF2020PrecisionMatching/opera_2020-10-24_22-17-08.png?raw=true)
 
 Awesome! It looks like that eliminated all the files made in Visual Studio 2017. We still have the statically linked files, but checking the imports should take care of that. Considering that CreateRemoteThread [comes](https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createremotethread "comes") from kernel32.dll, we will test against that first.
 ```
@@ -116,7 +116,7 @@ rule yarp {
 }
 
 ```
-![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/opera_2020-10-24_22-21-39.png?raw=true)
+![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/MetaCTF2020PrecisionMatching/opera_2020-10-24_22-21-39.png?raw=true)
 
 Hmm. That seems to have done the opposite of what we wanted, let us try prepending it with a not instead.
 
@@ -129,7 +129,7 @@ rule yarp {
 }
 
 ```
-![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/opera_2020-10-24_22-22-43.png?raw=true)
+![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/MetaCTF2020PrecisionMatching/opera_2020-10-24_22-22-43.png?raw=true)
 
 That is much better. It now flags the dynamically linked files.
 Finally, we can combine them:
@@ -143,7 +143,7 @@ rule yarp {
 
 
 ```
-![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/opera_2020-10-24_22-31-09.png?raw=true)
+![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/MetaCTF2020PrecisionMatching/opera_2020-10-24_22-31-09.png?raw=true)
 
 Looks like it worked!
 ## Closing Thoughts
