@@ -145,7 +145,7 @@ rule yarp {
 
 
 ```
-
+![Image](https://github.com/ZacharyTraul/Pwn-Rev/blob/main/opera_2020-10-24_22-31-09.png?raw=true)
 Looks like it worked!
 ## Closing Thoughts
 This is one of my favorite reversing challenges I have done so far. While there was less looking at a disassembler and untangling of functions, this felt much more directly applicable to malware research than most other reversing challenges I have done so far.
