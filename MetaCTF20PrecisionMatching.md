@@ -5,7 +5,7 @@ YARA describes itself as a pattern matching swiss knife for malware researchers.
 We recently uncovered a malware author using a) dynamic imports for their calls to CreateRemoteThread, and b) Visual Studio 2019. Here's the one sample we've managed to recover so far. We'd like you to visit our YARA Rule Making Studio and craft a rule to match only these characteristics - no false positives!
 
 ## What is this YARA stuff?
-After a quick google search, I ended up at the [documentation](http://https://yara.readthedocs.io/en/stable/writingrules.html "documentation"). Apparently it is a tool that is used to write rules against which files are checked to see if they are potentially malicious. Here is a basic example that returns true if a file is a PNG (or at least contains the header somewhere in it) :
+After a quick google search, I ended up at the [documentation](https://yara.readthedocs.io/en/stable/writingrules.html "documentation"). Apparently it is a tool that is used to write rules against which files are checked to see if they are potentially malicious. Here is a basic example that returns true if a file is a PNG (or at least contains the header somewhere in it) :
 ```
 rule rule_name
 {
@@ -26,12 +26,12 @@ Considering we are trying to detect imports, it looks like the [imports](http://
 `imports(dll_name, function_name)
 `
 
-After looking for a way to tell what version of Visual Studio was used to create the binary, it [looks](http://https://stackoverflow.com/questions/40831299/can-i-tell-what-version-of-visual-studio-was-used-to-build-a-dll-by-examining-th "looks") like looking at the linker version is the way to go. Conveniently, there is also an easy way to look at that as well with [linker_version](http://https://yara.readthedocs.io/en/stable/modules/pe.html#c.linker_version "linker_version").major and .minor:
+After looking for a way to tell what version of Visual Studio was used to create the binary, it [looks](https://stackoverflow.com/questions/40831299/can-i-tell-what-version-of-visual-studio-was-used-to-build-a-dll-by-examining-th "looks") like looking at the linker version is the way to go. Conveniently, there is also an easy way to look at that as well with [linker_version](https://yara.readthedocs.io/en/stable/modules/pe.html#c.linker_version "linker_version").major and .minor:
 `linker_version.major` and `linker_version.minor`
 ## Investigation
 Now that we know what functions we want to use, we need to find the linker version we will compare against and the name of the dll and function we will check with imports().
 ### The Linker Version
-After searching for a tool that could give metadata on .exe files, I [learned](http://https://superuser.com/questions/1060460/how-to-get-from-a-exe-executable-file-the-version-author-publisher-etc-and "learned") that exiftool could do the job. Running it against the binary: 
+After searching for a tool that could give metadata on .exe files, I [learned](https://superuser.com/questions/1060460/how-to-get-from-a-exe-executable-file-the-version-author-publisher-etc-and "learned") that exiftool could do the job. Running it against the binary: 
 ```bash
 kali@kali:~/MetaCTF2020/yara$ exiftool malware-dyn-vs19-variant0.exe
 ExifTool Version Number         : 12.06
