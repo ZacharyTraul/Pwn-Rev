@@ -11,7 +11,7 @@ rule rule_name
 {
 	//Define string variables
 	strings:
-									//PNG Magic Number
+				//PNG Magic Number
 		$my_hex_string = {89 50 4E 47 D A 1A A}
 
 	//Define return values
